@@ -1,36 +1,125 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Bini
 
-## Getting Started
+## 概要
 
-First, run the development server:
+このアプリは、「挑戦を始めたいけど腰が重い」人に向けて、**簡単かつ気軽に新しいことへ挑戦できる機会**を提供するサービス。
+
+- 「新しいレシピが見つかる」
+- 「ちょっとやってみようかなと思える」
+- 「成功体験を記録・評価できる」
+
+という一連の流れをサポートし、モチベーションを継続させます。
+
+---
+
+## 主な機能
+
+### ✅ 楽に挑戦し始めるための機能
+
+- 定期的に*新しい挑戦*が届く機能
+- 小さなことから始められる提案
+- テンプレートの提供（やりたいことの始め方ガイド）
+- 他人からの応援・評価（コメント・スタンプなど）
+- モチベーションアップの通知
+- 挑戦履歴の記録と達成感の可視化
+
+---
+
+## ペルソナ
+
+### 初学者
+- 年齢：18歳
+- 職業：大学生
+- 学年：1年生
+- いつ使うのか：
+
+新しい技術についての知見を深めたいから
+- 技術スキル：
+
+スマホは使い慣れているがPCはあまり使えない
+
+### 挑戦を続けたいユーザー
+- 年齢：21歳
+- 職業：大学生
+- 学年：3年生
+- いつ使うのか：
+
+技術をどうやって学習をすればわからないから
+- 技術スキル：
+
+PCのことならなんでもござれ。技術インターンなどにたくさん参加している!!
+
+
+## ユーザーストーリー
+
+### 🌱 初学者ユーザー
+「やる気はあるけど何から始めたらいいか分からない」
+
+→ ホーム画面で新しい挑戦提案を見る
+
+→ テンプレートに従って簡単に開始
+
+→ 成果を投稿し、他人からコメントが届く
+
+### 💡 挑戦を続けたいユーザー
+「モチベーションが続かない…」
+
+→ 達成記録のタイムラインや通知で自己肯定感UP
+
+---
+
+## 技術スタック
+
+### 🔧 フロントエンド
+- **Next.js**
+- **Tailwind CSS**
+- **TypeScript**
+
+### ☁️ バックエンド・クラウドサービス
+- **Firebase**
+  - Authentication（匿名/Googleログイン）
+  - Firestore（ユーザー・チャレンジ・履歴の保存）
+- **Gemini API**（チャレンジ生成の自動化など）
+- **Vercel** (Web公開用)
+
+---
+
+## ページ仕様
+
+| ページ | 概要 |
+|-------|------|
+| `/` | 今日のおすすめチャレンジ、新着、通知バナー |
+| `/challenge` | 全ユーザーのチャレンジ履歴一覧、ユーザー、カテゴリー、達成ステータス |
+| `/friend` | フレンド機能 |
+| `/profile` | 自分の記録、達成済み、コメントされた履歴 |
+| `/settings` | 個人情報設定、通知設定など |
+
+---
+
+## 仕様・UIアイデア反映点
+
+### 🎯 ホワイトボードの内容との対応
+- 「定期的な通知」：モチベーション維持・アップをするための通知
+- 「テンプレート」：カテゴリごとの始め方ガイド
+- 「他人からの励まし」：いいね/コメント機能
+- 「すぐに始められる」：難易度タグ・開始ボタンのUX設計
+- 「モチベーションアップ」：バッジ・レベル機能・進捗バー
+- 「リコメンド機能」:
+- 「検索機能」：
+
+---
+
+## 開発環境構築手順（例）
 
 ```bash
+# 初期セットアップ
+git clone git:github.com@rikut0904/bini.git
+cd bini 
+
+# Firebase設定
+cp .env.example .env.local
+npm install
+
+# ローカルサーバ起動
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
