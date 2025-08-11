@@ -1,103 +1,320 @@
-import Image from "next/image";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
+import { Badge } from "@/components/ui/badge"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Progress } from "@/components/ui/progress"
+import { Heart, MessageCircle, Share2, Sparkles, TrendingUp, Bell, X, Trophy, Target, Clock, Users } from "lucide-react"
 
-export default function Home() {
+const todaysChallenges = [
+  {
+    id: 1,
+    title: "新しいレシピに挑戦",
+    description: "今まで作ったことのない料理を1品作ってみよう",
+    difficulty: "初級",
+    category: "料理",
+    estimatedTime: "30分",
+    participants: 124,
+    likes: 45,
+    image: "/placeholder.svg?height=200&width=300",
+    progress: 0,
+    isRecommended: true,
+  },
+  {
+    id: 2,
+    title: "5分間瞑想",
+    description: "心を落ち着かせて、今日一日をリフレッシュしよう",
+    difficulty: "初級",
+    category: "ウェルネス",
+    estimatedTime: "5分",
+    participants: 89,
+    likes: 32,
+    image: "/placeholder.svg?height=200&width=300",
+    progress: 0,
+    isRecommended: true,
+  },
+  {
+    id: 3,
+    title: "新しい言語を学ぶ",
+    description: "興味のある言語の基本的な挨拶を覚えてみよう",
+    difficulty: "中級",
+    category: "学習",
+    estimatedTime: "15分",
+    participants: 67,
+    likes: 28,
+    image: "/placeholder.svg?height=200&width=300",
+    progress: 0,
+    isRecommended: false,
+  },
+]
+
+const ongoingChallenges = [
+  {
+    id: 4,
+    title: "毎日読書30分",
+    progress: 65,
+    daysLeft: 12,
+    category: "学習",
+  },
+  {
+    id: 5,
+    title: "朝のストレッチ",
+    progress: 80,
+    daysLeft: 5,
+    category: "健康",
+  },
+]
+
+const recentActivities = [
+  {
+    user: "田中さん",
+    action: "「手作りパンに挑戦」を完了しました",
+    time: "2時間前",
+    avatar: "/placeholder.svg?height=40&width=40",
+    type: "completion",
+  },
+  {
+    user: "佐藤さん",
+    action: "「朝のジョギング」にいいねしました",
+    time: "4時間前",
+    avatar: "/placeholder.svg?height=40&width=40",
+    type: "like",
+  },
+  {
+    user: "山田さん",
+    action: "「読書習慣」を開始しました",
+    time: "6時間前",
+    avatar: "/placeholder.svg?height=40&width=40",
+    type: "start",
+  },
+]
+
+const achievements = [
+  { name: "初挑戦", icon: "🌱", description: "初めてのチャレンジを完了" },
+  { name: "継続力", icon: "🔥", description: "7日連続でチャレンジを実行" },
+  { name: "人気者", icon: "❤️", description: "投稿が10いいねを獲得" },
+]
+
+export default function HomePage() {
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+    <div className="p-8 max-w-7xl mx-auto">
+      {/* Notification Banner */}
+      <div className="mb-8">
+        <Card className="bg-gradient-to-r from-pink-100 to-blue-100 border-pink-200">
+          <CardContent className="p-4">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <Bell className="w-5 h-5 text-pink-600" />
+                <div>
+                  <p className="font-medium text-pink-800">今日のモチベーション</p>
+                  <p className="text-sm text-pink-700">小さな一歩が大きな変化を生み出します！今日も頑張りましょう 🌟</p>
+                </div>
+              </div>
+              <Button variant="ghost" size="sm" className="text-pink-600 hover:bg-pink-200">
+                <X className="w-4 h-4" />
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+      {/* Welcome Section */}
+      <div className="mb-8">
+        <h1 className="text-3xl font-bold text-gray-900 mb-2">おはようございます！</h1>
+        <p className="text-gray-600">今日も新しい挑戦を始めてみませんか？</p>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        {/* Main Content */}
+        <div className="lg:col-span-2 space-y-8">
+          {/* Today's Recommended Challenges */}
+          <section>
+            <div className="flex items-center gap-2 mb-6">
+              <Sparkles className="w-6 h-6 text-pink-500" />
+              <h2 className="text-2xl font-semibold text-gray-900">今日のおすすめチャレンジ</h2>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {todaysChallenges.map((challenge) => (
+                <Card
+                  key={challenge.id}
+                  className="overflow-hidden hover:shadow-lg transition-all duration-300 hover:-translate-y-1"
+                >
+                  <div className="aspect-video relative">
+                    <img
+                      src={challenge.image || "/placeholder.svg"}
+                      alt={challenge.title}
+                      className="w-full h-full object-cover"
+                    />
+                    <div className="absolute top-3 left-3 flex gap-2">
+                      <Badge className="bg-white/90 text-gray-700" variant="secondary">
+                        {challenge.category}
+                      </Badge>
+                      {challenge.isRecommended && <Badge className="bg-pink-500 text-white">おすすめ</Badge>}
+                    </div>
+                    <div className="absolute top-3 right-3">
+                      <Button variant="ghost" size="sm" className="bg-white/80 hover:bg-white">
+                        <Heart className="w-4 h-4" />
+                      </Button>
+                    </div>
+                  </div>
+
+                  <CardHeader className="pb-3">
+                    <CardTitle className="text-lg">{challenge.title}</CardTitle>
+                    <p className="text-sm text-gray-600">{challenge.description}</p>
+                  </CardHeader>
+
+                  <CardContent className="pt-0">
+                    <div className="flex items-center justify-between mb-4 text-sm text-gray-500">
+                      <div className="flex items-center gap-4">
+                        <div className="flex items-center gap-1">
+                          <Target className="w-4 h-4" />
+                          {challenge.difficulty}
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <Clock className="w-4 h-4" />
+                          {challenge.estimatedTime}
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-4">
+                        <div className="flex items-center gap-1">
+                          <Users className="w-4 h-4" />
+                          {challenge.participants}
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <Heart className="w-4 h-4" />
+                          {challenge.likes}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-2">
+                      <Button className="flex-1 bg-gradient-to-r from-pink-500 to-blue-500 hover:from-pink-600 hover:to-blue-600">
+                        挑戦を始める
+                      </Button>
+                      <Button variant="outline" size="sm">
+                        <Share2 className="w-4 h-4" />
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </section>
+
+          {/* Recent Activities */}
+          <section>
+            <h2 className="text-2xl font-semibold text-gray-900 mb-6">最近のアクティビティ</h2>
+
+            <Card>
+              <CardContent className="p-6">
+                <div className="space-y-4">
+                  {recentActivities.map((activity, index) => (
+                    <div
+                      key={index}
+                      className="flex items-center gap-4 p-3 rounded-lg hover:bg-gray-50 transition-colors"
+                    >
+                      <Avatar>
+                        <AvatarImage src={activity.avatar || "/placeholder.svg"} />
+                        <AvatarFallback>{activity.user[0]}</AvatarFallback>
+                      </Avatar>
+                      <div className="flex-1">
+                        <p className="text-sm">
+                          <span className="font-medium">{activity.user}</span>
+                          <span className="text-gray-600 ml-1">{activity.action}</span>
+                        </p>
+                        <p className="text-xs text-gray-500">{activity.time}</p>
+                      </div>
+                      <div className="flex gap-1">
+                        <Button variant="ghost" size="sm">
+                          <Heart className="w-4 h-4" />
+                        </Button>
+                        <Button variant="ghost" size="sm">
+                          <MessageCircle className="w-4 h-4" />
+                        </Button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </section>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+
+        {/* Sidebar */}
+        <div className="space-y-6">
+          {/* Ongoing Challenges */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <TrendingUp className="w-5 h-5 text-blue-500" />
+                進行中のチャレンジ
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              {ongoingChallenges.map((challenge) => (
+                <div key={challenge.id} className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <h4 className="font-medium text-sm">{challenge.title}</h4>
+                    <Badge variant="outline" className="text-xs">
+                      {challenge.category}
+                    </Badge>
+                  </div>
+                  <Progress value={challenge.progress} className="h-2" />
+                  <div className="flex justify-between text-xs text-gray-500">
+                    <span>{challenge.progress}% 完了</span>
+                    <span>残り{challenge.daysLeft}日</span>
+                  </div>
+                </div>
+              ))}
+            </CardContent>
+          </Card>
+
+          {/* Achievements */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Trophy className="w-5 h-5 text-yellow-500" />
+                最近の達成
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              {achievements.map((achievement, index) => (
+                <div
+                  key={index}
+                  className="flex items-center gap-3 p-2 rounded-lg bg-gradient-to-r from-yellow-50 to-orange-50"
+                >
+                  <div className="text-2xl">{achievement.icon}</div>
+                  <div>
+                    <p className="font-medium text-sm">{achievement.name}</p>
+                    <p className="text-xs text-gray-600">{achievement.description}</p>
+                  </div>
+                </div>
+              ))}
+            </CardContent>
+          </Card>
+
+          {/* Quick Stats */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-lg">今週の統計</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="flex items-center justify-between">
+                <span className="text-sm text-gray-600">完了したチャレンジ</span>
+                <span className="font-bold text-lg text-green-600">5</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-sm text-gray-600">獲得いいね</span>
+                <span className="font-bold text-lg text-pink-600">23</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-sm text-gray-600">連続日数</span>
+                <span className="font-bold text-lg text-blue-600">7日</span>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
     </div>
-  );
+  )
 }
