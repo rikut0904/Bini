@@ -72,13 +72,6 @@ const recentActivities = [
     avatar: "/placeholder.svg?height=40&width=40",
     type: "completion",
   },
-  {
-    user: "佐藤さん",
-    action: "「朝のジョギング」にいいねしました",
-    time: "4時間前",
-    avatar: "/placeholder.svg?height=40&width=40",
-    type: "like",
-  },
 ]
 
 const achievements = [
