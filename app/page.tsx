@@ -79,13 +79,6 @@ const recentActivities = [
     avatar: "/placeholder.svg?height=40&width=40",
     type: "like",
   },
-  {
-    user: "山田さん",
-    action: "「読書習慣」を開始しました",
-    time: "6時間前",
-    avatar: "/placeholder.svg?height=40&width=40",
-    type: "start",
-  },
 ]
 
 const achievements = [
