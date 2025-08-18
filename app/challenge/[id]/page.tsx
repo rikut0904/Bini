@@ -89,7 +89,9 @@ const recentCompletions = [
   },
 ]
 
-export default function ChallengeDetailPage({ params }: { params: { id: string } }) {
+export default async function ChallengeDetailPage({ params }: { params: Promise<{ id: string }> }) {
+  // In Next.js 15, route params are provided as a Promise
+  const { id } = await params
   return (
     <div className="p-8 max-w-6xl mx-auto">
       {/* Back Button */}
