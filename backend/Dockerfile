@@ -22,7 +22,7 @@ RUN --mount=type=cache,id=s/9ee88210-82cb-4e17-93dd-162827b0116f-gomod,target=/g
 # ビルド
 RUN --mount=type=cache,id=s/9ee88210-82cb-4e17-93dd-162827b0116f-gomod,target=/go/pkg/mod \
     --mount=type=cache,id=s/9ee88210-82cb-4e17-93dd-162827b0116f-gobuild,target=/root/.cache/go-build \
-    go build -trimpath -o /app/server ./cmd/api
+    go build -trimpath -o /app/server ./cmd/server
 
 ########## Runner ##########
 FROM gcr.io/distroless/static-debian12:nonroot
