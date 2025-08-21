@@ -1,0 +1,124 @@
+.
+├── README.md
+├── app_tree.txt
+├── backend
+│   ├── Dockerfile
+│   ├── Makefile
+│   ├── bini-backend
+│   ├── cmd
+│   │   └── server
+│   │       └── main.go
+│   ├── go.mod
+│   ├── go.sum
+│   ├── internal
+│   │   ├── db
+│   │   │   ├── connect.go
+│   │   │   └── migrate.go
+│   │   ├── http
+│   │   │   ├── handlers.go
+│   │   │   └── router.go
+│   │   ├── models
+│   │   │   ├── challenge.go
+│   │   │   └── user.go
+│   │   ├── repository
+│   │   │   ├── challenge_repo.go
+│   │   │   └── user_repo.go
+│   │   └── service
+│   │       ├── challenge_service.go
+│   │       └── user_service.go
+│   └── migrations
+│       ├── 0001_init.sql
+│       └── 0002_seed.sql
+├── docker-compose.yml
+└── frontend
+    ├── Dockerfile
+    ├── app
+    │   ├── challenge
+    │   │   ├── [id]
+    │   │   │   └── page.tsx
+    │   │   ├── loading.tsx
+    │   │   └── page.tsx
+    │   ├── friend
+    │   │   ├── loading.tsx
+    │   │   └── page.tsx
+    │   ├── globals.css
+    │   ├── layout.tsx
+    │   ├── page.tsx
+    │   ├── profile
+    │   │   └── page.tsx
+    │   └── settings
+    │       └── page.tsx
+    ├── components
+    │   ├── navigation.tsx
+    │   ├── theme-provider.tsx
+    │   └── ui
+    │       ├── accordion.tsx
+    │       ├── alert-dialog.tsx
+    │       ├── alert.tsx
+    │       ├── aspect-ratio.tsx
+    │       ├── avatar.tsx
+    │       ├── badge.tsx
+    │       ├── breadcrumb.tsx
+    │       ├── button.tsx
+    │       ├── calendar.tsx
+    │       ├── card.tsx
+    │       ├── carousel.tsx
+    │       ├── chart.tsx
+    │       ├── checkbox.tsx
+    │       ├── collapsible.tsx
+    │       ├── command.tsx
+    │       ├── context-menu.tsx
+    │       ├── dialog.tsx
+    │       ├── drawer.tsx
+    │       ├── dropdown-menu.tsx
+    │       ├── form.tsx
+    │       ├── hover-card.tsx
+    │       ├── input-otp.tsx
+    │       ├── input.tsx
+    │       ├── label.tsx
+    │       ├── menubar.tsx
+    │       ├── navigation-menu.tsx
+    │       ├── pagination.tsx
+    │       ├── popover.tsx
+    │       ├── progress.tsx
+    │       ├── radio-group.tsx
+    │       ├── resizable.tsx
+    │       ├── scroll-area.tsx
+    │       ├── select.tsx
+    │       ├── separator.tsx
+    │       ├── sheet.tsx
+    │       ├── sidebar.tsx
+    │       ├── skeleton.tsx
+    │       ├── slider.tsx
+    │       ├── sonner.tsx
+    │       ├── switch.tsx
+    │       ├── table.tsx
+    │       ├── tabs.tsx
+    │       ├── textarea.tsx
+    │       ├── toast.tsx
+    │       ├── toaster.tsx
+    │       ├── toggle-group.tsx
+    │       ├── toggle.tsx
+    │       ├── tooltip.tsx
+    │       ├── use-mobile.tsx
+    │       └── use-toast.ts
+    ├── eslint.config.mjs
+    ├── lib
+    │   └── utils.ts
+    ├── next-env.d.ts
+    ├── next.config.ts
+    ├── package-lock.json
+    ├── package.json
+    ├── postcss.config.mjs
+    ├── public
+    │   ├── placeholder-logo.png
+    │   ├── placeholder-logo.svg
+    │   ├── placeholder-user.jpg
+    │   ├── placeholder.jpg
+    │   └── placeholder.svg
+    ├── styles
+    │   └── globals.css
+    ├── tailwind.config.mjs
+    └── tsconfig.json
+
+23 directories, 99 files

@@ -1,20 +1,51 @@
+version: "3.9"
+
 services:
+  db:
+    image: postgres:16
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: bini
+    ports:
+      - "5432:5432"
+    volumes:
+      - dbdata:/var/lib/postgresql/data
+
   backend:
     build:
       context: ./backend
+      args:
+        SERVICE_ID: ${SERVICE_ID}
+    environment:
+      SERVICE_ID: ${SERVICE_ID}
+      # Railway の DB を使うため .env から DATABASE_URL を渡す
+      DATABASE_URL: ${DATABASE_URL}
+      PGHOST: db
+      PGPORT: "5432"
+      PGUSER: postgres
+      PGPASSWORD: postgres
+      PGDATABASE: bini
+      PGSSLMODE: disable
+      PORT: "8080"
     ports:
       - "8080:8080"
+
   frontend:
-    image: node:22-alpine
-    working_dir: /app/frontend
-    volumes:
-      - ./:/app
-      - /app/frontend/node_modules
+    build:
+      context: ./frontend
+      args:
+        # ビルド時に API を埋め込む（env から受け取る）。未設定なら backend を参照
+        NEXT_PUBLIC_API_BASE_URL: ${NEXT_PUBLIC_API_BASE_URL:-http://backend:8080}
     environment:
-      - BACKEND_URL=http://backend:8080
-      - NODE_ENV=development
-    command: sh -lc "if [ -f package-lock.json ]; then npm ci --no-audit --no-fund; else npm install --no-audit --no-fund; fi; npm run dev -- -H 0.0.0.0 -p 3000"
-    ports:
-      - "3000:3000"
+      # ランタイムで上書きしたい場合に使用（未設定ならビルド時の値が使われます）
+      NEXT_PUBLIC_API_BASE_URL: ${NEXT_PUBLIC_API_BASE_URL:-http://backend:8080}
+      PORT: "3000"
     depends_on:
       - backend
+    ports:
+      - "3000:3000"
+
+volumes:
+  dbdata:

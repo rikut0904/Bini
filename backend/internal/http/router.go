@@ -1,0 +1,45 @@
+package httpapi
+
+import (
+	"database/sql"
+	"net/http"
+
+	"github.com/go-chi/chi/v5"
+	"github.com/go-chi/cors"
+
+	"github.com/rikut0904/Bini/backend/internal/repository"
+	"github.com/rikut0904/Bini/backend/internal/service"
+)
+
+func NewRouter(db *sql.DB) http.Handler {
+	r := chi.NewRouter()
+
+	r.Use(cors.Handler(cors.Options{
+		AllowedOrigins:   []string{"*"}, // 必要に応じて制限
+		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		AllowedHeaders:   []string{"Accept", "Authorization", "Content-Type", "X-CSRF-Token"},
+		AllowCredentials: false,
+		MaxAge:           300,
+	}))
+
+	// DI
+	userRepo := repository.NewUserRepository(db)
+	chRepo := repository.NewChallengeRepository(db)
+	userSvc := service.NewUserService(userRepo)
+	chSvc := service.NewChallengeService(chRepo)
+
+	r.Get("/healthz", func(w http.ResponseWriter, _ *http.Request) {
+		WriteJSON(w, http.StatusOK, map[string]string{"status": "ok"})
+	})
+
+	// users
+	r.Method("GET", "/users", UsersListHandler(userSvc))
+	r.Method("POST", "/users", UsersCreateHandler(userSvc))
+
+	// challenges
+	r.Method("GET", "/challenges", ChallengesListHandler(chSvc))
+	r.Method("POST", "/challenges", ChallengesCreateHandler(chSvc))
+	r.Method("GET", "/challenges/{id}", ChallengesGetHandler(chSvc))
+
+	return r
+}
