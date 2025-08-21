@@ -7,11 +7,11 @@ RUN --mount=type=cache,target=/go/pkg/mod go mod download
 
 FROM golang:1.22 AS builder
 WORKDIR /src
-COPY --from=deps /go/pkg/mod /go/pkg/mod
 ARG SERVICE_ID=""
 ENV SERVICE_ID=${SERVICE_ID}
 COPY . .
 RUN --mount=type=cache,target=/root/.cache/go-build \
+    --mount=type=cache,target=/go/pkg/mod \
     CGO_ENABLED=0 GOOS=linux GOARCH=amd64 \
     go build -trimpath -ldflags "-s -w" -o /out/app ./cmd/server
 
