@@ -9,27 +9,15 @@ import (
 	_ "github.com/jackc/pgx/v5/stdlib"
 )
 
-// DATABASE_URL があればそれを優先（Railway想定）。なければ個別のPG*環境変数から組み立て。
 func dsnFromEnv() (string, error) {
 	if url := os.Getenv("DATABASE_URL"); url != "" {
 		// 例: postgres://user:pass@host:port/dbname?sslmode=require
 		return url, nil
 	}
-	host := envOr("PGHOST", "db")
-	port := envOr("PGPORT", "5432")
-	user := envOr("PGUSER", "postgres")
-	pass := envOr("PGPASSWORD", "postgres")
-	name := envOr("PGDATABASE", "bini")
-	ssl := envOr("PGSSLMODE", "disable") // ローカルはdisable
-	return fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=%s", user, pass, host, port, name, ssl), nil
+    return "", fmt.Errorf("DATABASE_URL not set; please configure it via environment or .env")
 }
 
-func envOr(k, def string) string {
-	if v := os.Getenv(k); v != "" {
-		return v
-	}
-	return def
-}
+// envOr is no longer used; relying on DATABASE_URL for configuration
 
 func Connect(ctx context.Context) (*sql.DB, error) {
 	dsn, err := dsnFromEnv()
