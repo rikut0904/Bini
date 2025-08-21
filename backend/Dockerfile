@@ -2,13 +2,16 @@
 
 FROM golang:1.22 AS deps
 WORKDIR /src
+ENV GOPROXY=direct
 COPY go.mod go.sum ./
 RUN go mod download
 
 FROM golang:1.22 AS builder
 WORKDIR /src
+ENV GOPROXY=direct
 ARG SERVICE_ID=""
 ENV SERVICE_ID=${SERVICE_ID}
+COPY --from=deps /go/pkg/mod /go/pkg/mod
 COPY . .
 RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 \
     go build -trimpath -ldflags "-s -w" -o /out/app ./cmd/server
