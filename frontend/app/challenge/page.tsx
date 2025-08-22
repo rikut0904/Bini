@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Heart, MessageCircle, Share2, Search, Clock, Users, Target, CheckCircle, Play, Pause } from "lucide-react"
+import { Heart, MessageCircle, Share2, Search, Clock, Users, Target, CheckCircle, Play, Pause, Plus } from "lucide-react"
 import Link from "next/link"
 
 const challenges = [
@@ -356,6 +356,15 @@ export default function ChallengePage() {
           <p className="text-gray-400 text-sm mt-2">検索条件を変更してみてください</p>
         </div>
       )}
+
+      {/* Floating Action Button */}
+      <Link href="/challenge/new" passHref>
+        <Button
+          className="fixed bottom-8 right-8 h-16 w-16 rounded-full bg-gradient-to-r from-pink-500 to-blue-500 text-white shadow-lg hover:scale-110 transition-transform duration-300"
+        >
+          <Plus className="h-8 w-8" />
+        </Button>
+      </Link>
     </div>
   )
 }
