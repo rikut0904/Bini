@@ -119,8 +119,10 @@ PCのことならなんでもござれ。技術インターンなどにたくさ
 # 初期セットアップ
 git clone git:github.com@rikut0904/bini.git
 cd bini 
-docker-compose build
 
 # ローカルサーバ起動
+docker-compose build
 docker-compose up
 ```
+---
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/rikut0904/Bini)
