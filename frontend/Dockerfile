@@ -10,8 +10,8 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
-# API エンドポイントはビルド時に埋め込む（ランタイムでも上書き可）
-ARG NEXT_PUBLIC_API_BASE_URL="http://localhost:8080"
+# APIベースURLは /api に固定（Vercel リバースプロキシ使用）
+ARG NEXT_PUBLIC_API_BASE_URL="/api"
 ENV NEXT_PUBLIC_API_BASE_URL=${NEXT_PUBLIC_API_BASE_URL}
 
 RUN --mount=type=cache,target=/root/.npm \

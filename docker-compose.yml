@@ -16,11 +16,10 @@ services:
     build:
       context: ./frontend
       args:
-        # ビルド時に API を埋め込む（env から受け取る）。未設定なら backend を参照
-        NEXT_PUBLIC_API_BASE_URL: ${NEXT_PUBLIC_API_BASE_URL:-http://backend:8080}
+        # プロキシ方式: クライアントは /api を叩く
+        NEXT_PUBLIC_API_BASE_URL: ${NEXT_PUBLIC_API_BASE_URL:-/api}
     environment:
-      # ランタイムで上書きしたい場合に使用（未設定ならビルド時の値が使われます）
-      NEXT_PUBLIC_API_BASE_URL: ${NEXT_PUBLIC_API_BASE_URL:-http://backend:8080}
+      NEXT_PUBLIC_API_BASE_URL: ${NEXT_PUBLIC_API_BASE_URL:-/api}
       PORT: "3000"
     ports:
       - "3000:3000"

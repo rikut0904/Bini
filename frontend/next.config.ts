@@ -1,13 +1,13 @@
 import type { NextConfig } from "next";
 
-// Proxy Next.js API requests to Go backend to keep UI unchanged
+// Proxy /api/* -> BACKEND_ORIGIN/*
 const nextConfig: NextConfig = {
   async rewrites() {
-    const backendUrl = process.env.BACKEND_URL || "http://localhost:8080";
+    const backendOrigin = process.env.BACKEND_ORIGIN || "http://backend:8080";
     return [
       {
         source: "/api/:path*",
-        destination: `${backendUrl}/api/:path*`,
+        destination: `${backendOrigin}/:path*`,
       },
     ];
   },
