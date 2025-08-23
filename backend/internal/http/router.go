@@ -41,5 +41,10 @@ func NewRouter(db *sql.DB) http.Handler {
 	r.Method("POST", "/challenges", ChallengesCreateHandler(chSvc))
 	r.Method("GET", "/challenges/{id}", ChallengesGetHandler(chSvc))
 
+	// Serve static files from the 'uploads' directory
+	// This makes files accessible via http://localhost:8080/uploads/filename.jpg
+	fileServer := http.FileServer(http.Dir("./uploads"))
+	r.Handle("/uploads/*", http.StripPrefix("/uploads", fileServer))
+
 	return r
 }

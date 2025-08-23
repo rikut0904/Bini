@@ -41,6 +41,7 @@ services:
         condition: service_healthy
     restart: unless-stopped
 
+
   frontend:
     build:
       context: ./frontend
@@ -48,7 +49,7 @@ services:
         # ビルド時に API を埋め込む（env から受け取る）。未設定なら backend を参照
         NEXT_PUBLIC_API_BASE_URL: ${NEXT_PUBLIC_API_BASE_URL:-http://backend:8080}
     environment:
-      # ランタイムで上書きしたい場合に使用（未設定ならビルド時の値が使われます）
+      # ランタイムで上書きしたい場合に使用（未設定ならビルド時の値がされます）
       NEXT_PUBLIC_API_BASE_URL: ${NEXT_PUBLIC_API_BASE_URL:-http://backend:8080}
       PORT: "3000"
     depends_on:

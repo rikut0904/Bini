@@ -68,12 +68,21 @@ type challengeCreateRequest struct {
 	// PhotoURL will be handled via multipart form
 }
 
+const baseURL = "http://localhost:8080/" // Define your base URL here
+
 func ChallengesListHandler(svc service.ChallengeService) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		list, err := svc.List(r.Context())
 		if err != nil {
 			WriteJSON(w, http.StatusInternalServerError, map[string]string{"error": err.Error()})
 			return
+		}
+
+		// Prepend base URL to PhotoURL for each challenge
+		for i := range list {
+			if list[i].PhotoURL != "" {
+				list[i].PhotoURL = baseURL + list[i].PhotoURL
+			}
 		}
 		WriteJSON(w, http.StatusOK, list)
 	})
@@ -91,6 +100,11 @@ func ChallengesGetHandler(svc service.ChallengeService) http.Handler {
 		if err != nil {
 			WriteJSON(w, http.StatusNotFound, map[string]string{"error": err.Error()})
 			return
+		}
+
+		// Prepend base URL to PhotoURL for the single challenge
+		if item.PhotoURL != "" {
+			item.PhotoURL = baseURL + item.PhotoURL
 		}
 		WriteJSON(w, http.StatusOK, item)
 	})
