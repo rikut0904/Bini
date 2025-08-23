@@ -18,13 +18,14 @@ export default function NewChallengePage() {
   const [category, setCategory] = useState("")
   const [difficulty, setDifficulty] = useState("")
   const [estimatedTime, setEstimatedTime] = useState("")
+  const [customEstimatedTime, setCustomEstimatedTime] = useState("")
   const [imageFile, setImageFile] = useState<File | null>(null)
   const [imagePreview, setImagePreview] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
 
   const categories = ["料理", "ウェルネス", "学習", "健康", "創作", "システム関係", "その他"]
   const difficulties = ["easy", "medium", "hard"]
-  const estimatedTimes = ["5分", "15分", "30分", "1時間", "半日", "1日以上"]
+  const estimatedTimes = ["5分", "15分", "30分", "1時間", "半日", "1日", "3日", "5日", "1週間","2週間", "1ヶ月", "その他"]
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -49,6 +50,9 @@ export default function NewChallengePage() {
     if (imageFile) {
       formData.append("image", imageFile)
     }
+
+    const finalEstimatedTime = estimatedTime === "その他" ? customEstimatedTime : estimatedTime;
+    formData.append("estimated_time", finalEstimatedTime);
 
     try {
       // Replace with your actual API endpoint
@@ -160,6 +164,18 @@ export default function NewChallengePage() {
                   ))}
                 </SelectContent>
               </Select>
+              {estimatedTime === "その他" && (
+                <div className="space-y-2 mt-4">
+                  <Label htmlFor="customEstimatedTime">具体的な時間（その他）</Label>
+                  <Input
+                    id="customEstimatedTime"
+                    placeholder="例: 2時間30分"
+                    value={customEstimatedTime}
+                    onChange={(e) => setCustomEstimatedTime(e.target.value)}
+                    required
+                  />
+                </div>
+              )}
             </div>
 
             <div className="space-y-2">
