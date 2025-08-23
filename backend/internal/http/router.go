@@ -3,7 +3,7 @@ package httpapi
 import (
 	"database/sql"
 	"net/http"
-    "os"
+	"os"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/cors"
@@ -15,12 +15,12 @@ import (
 func NewRouter(db *sql.DB) http.Handler {
 	r := chi.NewRouter()
 
-    allowedOrigins := os.Getenv("CORS_ALLOWED_ORIGINS")
-    if allowedOrigins == "" {
-        allowedOrigins = "*"
-    }
-    r.Use(cors.Handler(cors.Options{
-        AllowedOrigins:   []string{allowedOrigins},
+	allowedOrigins := os.Getenv("CORS_ALLOWED_ORIGINS")
+	if allowedOrigins == "" {
+		allowedOrigins = "*"
+	}
+	r.Use(cors.Handler(cors.Options{
+		AllowedOrigins:   []string{allowedOrigins},
 		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
 		AllowedHeaders:   []string{"Accept", "Authorization", "Content-Type", "X-CSRF-Token"},
 		AllowCredentials: false,
@@ -45,11 +45,6 @@ func NewRouter(db *sql.DB) http.Handler {
 	r.Method("GET", "/challenges", ChallengesListHandler(chSvc))
 	r.Method("POST", "/challenges", ChallengesCreateHandler(chSvc))
 	r.Method("GET", "/challenges/{id}", ChallengesGetHandler(chSvc))
-
-	// Serve static files from the 'uploads' directory
-	// This makes files accessible via http://localhost:8080/uploads/filename.jpg
-	fileServer := http.FileServer(http.Dir("./uploads"))
-	r.Handle("/uploads/*", http.StripPrefix("/uploads", fileServer))
 
 	return r
 }
