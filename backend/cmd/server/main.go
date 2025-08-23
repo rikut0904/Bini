@@ -9,9 +9,12 @@ import (
 
 	"github.com/rikut0904/Bini/backend/internal/db"
 	"github.com/rikut0904/Bini/backend/internal/http"
+    "github.com/joho/godotenv"
 )
 
 func main() {
+    // Load .env if present (non-fatal if missing)
+    _ = godotenv.Load()
 	// 接続
 	conn, err := db.Connect(context.Background())
 	if err != nil {

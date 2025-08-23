@@ -5,30 +5,52 @@ import (
 	"database/sql"
 	"fmt"
 	"os"
+    "strings"
 
 	_ "github.com/jackc/pgx/v5/stdlib"
 )
 
-// DATABASE_URL があればそれを優先（Railway想定）。なければ個別のPG*環境変数から組み立て。
 func dsnFromEnv() (string, error) {
-	if url := os.Getenv("DATABASE_URL"); url != "" {
-		// 例: postgres://user:pass@host:port/dbname?sslmode=require
-		return url, nil
-	}
-	host := envOr("PGHOST", "db")
-	port := envOr("PGPORT", "5432")
-	user := envOr("PGUSER", "postgres")
-	pass := envOr("PGPASSWORD", "postgres")
-	name := envOr("PGDATABASE", "bini")
-	ssl := envOr("PGSSLMODE", "disable") // ローカルはdisable
-	return fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=%s", user, pass, host, port, name, ssl), nil
+    if url := envFirstNonEmpty("DATABASE_URL", "POSTGRES_URL", "POSTGRESQL_URL"); url != "" {
+        // 例: postgres://user:pass@host:port/dbname?sslmode=require
+        return url, nil
+    }
+
+    // Fallback: assemble from PG* variables (works on many PaaS/providers as well)
+    host := os.Getenv("PGHOST")
+    port := envOr("PGPORT", "5432")
+    user := envOr("PGUSER", "postgres")
+    pass := os.Getenv("PGPASSWORD")
+    if pass == "" {
+        if pf := os.Getenv("PGPASSWORD_FILE"); pf != "" {
+            if b, err := os.ReadFile(pf); err == nil {
+                pass = strings.TrimSpace(string(b))
+            }
+        }
+    }
+    name := envOr("PGDATABASE", "postgres")
+    ssl := envOr("PGSSLMODE", "require")
+
+    if host == "" || user == "" || pass == "" || name == "" {
+        return "", fmt.Errorf("database configuration missing. Set DATABASE_URL or PGHOST/PGUSER/PGPASSWORD/PGDATABASE")
+    }
+    return fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=%s", user, pass, host, port, name, ssl), nil
+}
+
+func envFirstNonEmpty(keys ...string) string {
+    for _, k := range keys {
+        if v := os.Getenv(k); v != "" {
+            return v
+        }
+    }
+    return ""
 }
 
 func envOr(k, def string) string {
-	if v := os.Getenv(k); v != "" {
-		return v
-	}
-	return def
+    if v := os.Getenv(k); v != "" {
+        return v
+    }
+    return def
 }
 
 func Connect(ctx context.Context) (*sql.DB, error) {
