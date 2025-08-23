@@ -29,14 +29,17 @@ func NewChallengeService(repo repository.ChallengeRepository) ChallengeService {
 	return &challengeService{repo: repo}
 }
 
+// メソッド-List
 func (s *challengeService) List(ctx context.Context) ([]models.Challenge, error) {
 	return s.repo.List(ctx)
 }
 
+// メソッド-Get
 func (s *challengeService) Get(ctx context.Context, id int64) (*models.Challenge, error) {
 	return s.repo.Get(ctx, id)
 }
 
+// メソッド-Create
 func (s *challengeService) Create(ctx context.Context, in CreateChallengeInput) (*models.Challenge, error) {
 	c := &models.Challenge{
 		Title:       in.Title,

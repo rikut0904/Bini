@@ -1,3 +1,14 @@
+-- CREATE TABLE テーブル名(
+-- カラム名 データ型 制約
+-- )
+
+-- 制約
+-- NOT NULL: 必須項目(空値禁止)
+-- UNIQUE: 重複不可
+-- DEFAULT: デフォルト値
+-- PRIMARY KEY: 主キー(テーブル内で一意な値)
+-- BIGSERIAL: 64ビットの整数(IDのように自動で連番を振る整数値)
+
 -- Users
 CREATE TABLE IF NOT EXISTS users (
   id BIGSERIAL PRIMARY KEY,

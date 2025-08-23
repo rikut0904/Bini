@@ -13,9 +13,8 @@ import (
 )
 
 func main() {
-    // Load .env if present (non-fatal if missing)
     _ = godotenv.Load()
-	// 接続
+	// DB接続
 	conn, err := db.Connect(context.Background())
 	if err != nil {
 		log.Fatalf("db connect error: %v", err)

@@ -20,11 +20,13 @@ func NewUserRepository(db *sql.DB) UserRepository {
 	return &userRepository{db: db}
 }
 
+// メソッド-List
 func (r *userRepository) List(ctx context.Context) ([]models.User, error) {
 	rows, err := r.db.QueryContext(ctx, `
 		SELECT id, uid, name, created_at
 		FROM users
 		ORDER BY id DESC`)
+	// usersテーブルのid, uid, name, created_atを抜き出し、idの大きい順に表示
 	if err != nil {
 		return nil, err
 	}
@@ -41,10 +43,12 @@ func (r *userRepository) List(ctx context.Context) ([]models.User, error) {
 	return out, rows.Err()
 }
 
+// メソッド-Create
 func (r *userRepository) Create(ctx context.Context, u *models.User) error {
 	return r.db.QueryRowContext(ctx, `
 		INSERT INTO users (uid, name)
 		VALUES ($1, $2)
 		RETURNING id, created_at
 	`, u.UID, u.Name).Scan(&u.ID, &u.CreatedAt)
+	// usersテーブルにuid, nameを追加し、id, created_atを抜き出して表示
 }

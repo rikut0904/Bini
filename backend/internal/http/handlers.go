@@ -17,6 +17,9 @@ import (
 )
 
 func WriteJSON(w http.ResponseWriter, code int, v any) {
+	// ヘッダーにContent-Typeをapplication/json; charset=utf-8に設定する。
+	// ステータスコードをcodeに設定する。
+	// vがnilでなければ、vをJSONにエンコードしてwに書き込む。
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
 	w.WriteHeader(code)
 	if v != nil {
@@ -32,6 +35,7 @@ type userCreateRequest struct {
 
 func UsersListHandler(svc service.UserService) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		// ユーザーすべて取得
 		users, err := svc.List(r.Context())
 		if err != nil {
 			WriteJSON(w, http.StatusInternalServerError, map[string]string{"error": err.Error()})
@@ -48,6 +52,7 @@ func UsersCreateHandler(svc service.UserService) http.Handler {
 			WriteJSON(w, http.StatusBadRequest, map[string]string{"error": "invalid json"})
 			return
 		}
+		// ユーザー作成
 		u, err := svc.Create(r.Context(), req.UID, req.Name)
 		if err != nil {
 			WriteJSON(w, http.StatusInternalServerError, map[string]string{"error": err.Error()})
@@ -72,6 +77,7 @@ const baseURL = "http://localhost:8080/" // Define your base URL here
 
 func ChallengesListHandler(svc service.ChallengeService) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		// チャレンジすべて取得
 		list, err := svc.List(r.Context())
 		if err != nil {
 			WriteJSON(w, http.StatusInternalServerError, map[string]string{"error": err.Error()})
@@ -96,6 +102,7 @@ func ChallengesGetHandler(svc service.ChallengeService) http.Handler {
 			WriteJSON(w, http.StatusBadRequest, map[string]string{"error": "invalid id"})
 			return
 		}
+		// チャレンジ取得
 		item, err := svc.Get(r.Context(), id)
 		if err != nil {
 			WriteJSON(w, http.StatusNotFound, map[string]string{"error": err.Error()})
@@ -132,6 +139,7 @@ func ChallengesCreateHandler(svc service.ChallengeService) http.Handler {
 			WriteJSON(w, http.StatusBadRequest, map[string]string{"error": "invalid user_id"})
 			return
 		}
+<<<<<<< HEAD
 
 		var photoURL string
 		file, handler, err := r.FormFile("image")
@@ -178,6 +186,9 @@ func ChallengesCreateHandler(svc service.ChallengeService) http.Handler {
 			PhotoURL:    photoURL, // Pass the photo URL
 		}
 
+=======
+		// チャレンジ作成
+>>>>>>> origin/main
 		item, err := svc.Create(r.Context(), in)
 		if err != nil {
 			WriteJSON(w, http.StatusInternalServerError, map[string]string{"error": err.Error()})
