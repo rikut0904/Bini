@@ -139,7 +139,6 @@ func ChallengesCreateHandler(svc service.ChallengeService) http.Handler {
 			WriteJSON(w, http.StatusBadRequest, map[string]string{"error": "invalid user_id"})
 			return
 		}
-<<<<<<< HEAD
 
 		var photoURL string
 		file, handler, err := r.FormFile("image")
@@ -186,9 +185,7 @@ func ChallengesCreateHandler(svc service.ChallengeService) http.Handler {
 			PhotoURL:    photoURL, // Pass the photo URL
 		}
 
-=======
 		// チャレンジ作成
->>>>>>> origin/main
 		item, err := svc.Create(r.Context(), in)
 		if err != nil {
 			WriteJSON(w, http.StatusInternalServerError, map[string]string{"error": err.Error()})

@@ -1,5 +1,7 @@
 "use client"
 
+"use client"
+
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -9,7 +11,6 @@ import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { toast } from "@/components/ui/use-toast"
-import Image from "next/image"
 
 export default function NewChallengePage() {
   const router = useRouter()
@@ -19,24 +20,11 @@ export default function NewChallengePage() {
   const [difficulty, setDifficulty] = useState("")
   const [estimatedTime, setEstimatedTime] = useState("")
   const [customEstimatedTime, setCustomEstimatedTime] = useState("")
-  const [imageFile, setImageFile] = useState<File | null>(null)
-  const [imagePreview, setImagePreview] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
 
   const categories = ["料理", "ウェルネス", "学習", "健康", "創作", "システム関係", "その他"]
   const difficulties = ["easy", "medium", "hard"]
   const estimatedTimes = ["5分", "15分", "30分", "1時間", "半日", "1日", "3日", "5日", "1週間","2週間", "1ヶ月", "その他"]
-
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      const file = e.target.files[0]
-      setImageFile(file)
-      setImagePreview(URL.createObjectURL(file))
-    } else {
-      setImageFile(null)
-      setImagePreview(null)
-    }
-  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -47,9 +35,6 @@ export default function NewChallengePage() {
     formData.append("description", description)
     formData.append("level", difficulty) // Changed from category to level, and uses difficulty
     formData.append("user_id", "1") // Added a default user_id
-    if (imageFile) {
-      formData.append("image", imageFile)
-    }
 
     const finalEstimatedTime = estimatedTime === "その他" ? customEstimatedTime : estimatedTime;
     formData.append("estimated_time", finalEstimatedTime);
@@ -174,21 +159,6 @@ export default function NewChallengePage() {
                     onChange={(e) => setCustomEstimatedTime(e.target.value)}
                     required
                   />
-                </div>
-              )}
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="image">チャレンジ画像</Label>
-              <Input
-                id="image"
-                type="file"
-                accept="image/*"
-                onChange={handleImageChange}
-              />
-              {imagePreview && (
-                <div className="mt-4">
-                  <Image src={imagePreview} alt="Image Preview" width={200} height={200} className="rounded-md object-cover" />
                 </div>
               )}
             </div>

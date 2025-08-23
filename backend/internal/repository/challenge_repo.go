@@ -50,12 +50,8 @@ func (r *challengeRepository) Get(ctx context.Context, id int64) (*models.Challe
 	err := r.db.QueryRowContext(ctx, `
 		SELECT id, title, description, level, user_id, photo_url, created_at
 		FROM challenges WHERE id = $1
-<<<<<<< HEAD
 	`, id).Scan(&c.ID, &c.Title, &c.Description, &c.Level, &c.UserID, &c.PhotoURL, &c.CreatedAt)
-=======
-	`, id).Scan(&c.ID, &c.Title, &c.Description, &c.Level, &c.UserID, &c.CreatedAt)
 	// challengesテーブルのid, title, description, level, user_id, created_atをidと一致するものだけを抜き出して表示
->>>>>>> origin/main
 	if err != nil {
 		return nil, err
 	}
@@ -68,10 +64,6 @@ func (r *challengeRepository) Create(ctx context.Context, c *models.Challenge) e
 		INSERT INTO challenges (title, description, level, user_id, photo_url)
 		VALUES ($1, $2, $3, $4, $5)
 		RETURNING id, created_at
-<<<<<<< HEAD
 	`, c.Title, c.Description, c.Level, c.UserID, c.PhotoURL).Scan(&c.ID, &c.CreatedAt)
-=======
-	`, c.Title, c.Description, c.Level, c.UserID).Scan(&c.ID, &c.CreatedAt)
 	// challengesテーブルにtitle, description, level, user_idを追加し、id, created_atを抜き出して表示
->>>>>>> origin/main
 }

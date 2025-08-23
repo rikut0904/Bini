@@ -7,6 +7,7 @@ import (
 	"github.com/rikut0904/Bini/backend/internal/repository"
 )
 
+
 type ChallengeService interface {
 	List(ctx context.Context) ([]models.Challenge, error)
 	Get(ctx context.Context, id int64) (*models.Challenge, error)
