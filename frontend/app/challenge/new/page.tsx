@@ -22,8 +22,8 @@ export default function NewChallengePage() {
   const [imagePreview, setImagePreview] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
 
-  const categories = ["料理", "ウェルネス", "学習", "健康", "創作", "その他"]
-  const difficulties = ["初級", "中級", "上級"]
+  const categories = ["料理", "ウェルネス", "学習", "健康", "創作", "システム関係", "その他"]
+  const difficulties = ["easy", "medium", "hard"]
   const estimatedTimes = ["5分", "15分", "30分", "1時間", "半日", "1日以上"]
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -85,7 +85,7 @@ export default function NewChallengePage() {
         <p className="text-gray-600">あなたのアイデアをみんなと共有しましょう</p>
       </div>
 
-      <Card>
+      <Card className="bg-white/80">
         <CardHeader>
           <CardTitle>チャレンジ詳細</CardTitle>
         </CardHeader>
@@ -177,7 +177,11 @@ export default function NewChallengePage() {
               )}
             </div>
 
-            <Button type="submit" className="w-full" disabled={loading}>
+            <Button
+              type="submit"
+              className="w-full bg-gradient-to-r from-pink-500 to-blue-500 hover:from-pink-600 hover:to-blue-600"
+              disabled={loading}
+            >
               {loading ? "作成中..." : "チャレンジを作成"}
             </Button>
           </form>

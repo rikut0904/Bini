@@ -33,7 +33,7 @@ interface Challenge {
   created_at: string; // Corresponds to backend's 'CreatedAt'
 }
 
-const categories = ["全て", "料理", "ウェルネス", "学習", "健康", "創作", "その他"]
+const categories = ["全て", "料理", "ウェルネス", "学習", "健康", "創作", "システム関係", "その他"]
 const difficulties = ["全て", "初級", "中級", "上級"]
 const statuses = ["全て", "active", "completed", "paused"]
 
@@ -213,7 +213,7 @@ export default function ChallengePage() {
               >
                 <div className="aspect-video relative">
                   <img
-                    src={challenge.photo_url || "/placeholder.svg"}
+                    src={challenge.photo_url || "/placeholder.svg?height=200&width=300"}
                     alt={challenge.title}
                     className="w-full h-full object-cover"
                   />
