@@ -84,12 +84,6 @@ func ChallengesListHandler(svc service.ChallengeService) http.Handler {
 			return
 		}
 
-		// Prepend base URL to PhotoURL for each challenge
-		for i := range list {
-			if list[i].PhotoURL != "" {
-				list[i].PhotoURL = baseURL + list[i].PhotoURL
-			}
-		}
 		WriteJSON(w, http.StatusOK, list)
 	})
 }
@@ -109,10 +103,6 @@ func ChallengesGetHandler(svc service.ChallengeService) http.Handler {
 			return
 		}
 
-		// Prepend base URL to PhotoURL for the single challenge
-		if item.PhotoURL != "" {
-			item.PhotoURL = baseURL + item.PhotoURL
-		}
 		WriteJSON(w, http.StatusOK, item)
 	})
 }

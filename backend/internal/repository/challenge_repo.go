@@ -24,7 +24,7 @@ func NewChallengeRepository(db *sql.DB) ChallengeRepository {
 // メソッド-List
 func (r *challengeRepository) List(ctx context.Context) ([]models.Challenge, error) {
 	rows, err := r.db.QueryContext(ctx, `
-		SELECT id, title, description, level, user_id, photo_url, created_at
+		SELECT id, title, description, level, user_id, created_at
 		FROM challenges
 		ORDER BY id DESC`)
 	// challengesテーブルのid, title, description, level, user_id, created_atを抜き出し、idの大きい順に表示
@@ -36,7 +36,7 @@ func (r *challengeRepository) List(ctx context.Context) ([]models.Challenge, err
 	var out []models.Challenge
 	for rows.Next() {
 		var c models.Challenge
-		if err := rows.Scan(&c.ID, &c.Title, &c.Description, &c.Level, &c.UserID, &c.PhotoURL, &c.CreatedAt); err != nil {
+		if err := rows.Scan(&c.ID, &c.Title, &c.Description, &c.Level, &c.UserID, &c.CreatedAt); err != nil {
 			return nil, err
 		}
 		out = append(out, c)
@@ -48,9 +48,9 @@ func (r *challengeRepository) List(ctx context.Context) ([]models.Challenge, err
 func (r *challengeRepository) Get(ctx context.Context, id int64) (*models.Challenge, error) {
 	var c models.Challenge
 	err := r.db.QueryRowContext(ctx, `
-		SELECT id, title, description, level, user_id, photo_url, created_at
+		SELECT id, title, description, level, user_id, created_at
 		FROM challenges WHERE id = $1
-	`, id).Scan(&c.ID, &c.Title, &c.Description, &c.Level, &c.UserID, &c.PhotoURL, &c.CreatedAt)
+	`, id).Scan(&c.ID, &c.Title, &c.Description, &c.Level, &c.UserID, &c.CreatedAt)
 	// challengesテーブルのid, title, description, level, user_id, created_atをidと一致するものだけを抜き出して表示
 	if err != nil {
 		return nil, err
