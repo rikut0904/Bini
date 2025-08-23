@@ -317,9 +317,9 @@ export default function ChallengePage() {
       {/* Floating Action Button */}
       <Link href="/challenge/new" passHref>
         <Button
-          className="fixed bottom-8 right-8 rounded-full w-16 h-16 p-0 shadow-lg bg-gradient-to-r from-pink-500 to-blue-500 hover:from-pink-600 hover:to-blue-600 text-white text-3xl flex items-center justify-center"
+          className="gap-2 whitespace-nowrap font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-10 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive bg-matcha hover:bg-matcha/90 has-[>svg]:px-3 fixed bottom-8 right-8 rounded-full w-16 h-16 p-0 shadow-lg bg-gradient-to-r from-pink-500 to-blue-500 hover:from-pink-600 hover:to-blue-600 text-white text-6xl flex items-center justify-center"
         >
-          <Plus className="w-8 h-8" />
+          <Plus size={24} />
         </Button>
       </Link>
 

@@ -179,7 +179,7 @@ export default function NewChallengePage() {
 
             <Button
               type="submit"
-              className="w-full bg-gradient-to-r from-pink-500 to-blue-500 hover:from-pink-600 hover:to-blue-600"
+              className="w-full bg-gradient-to-r from-pink-500 to-blue-500 hover:from-pink-600 hover:to-blue-600 text-white"
               disabled={loading}
             >
               {loading ? "作成中..." : "チャレンジを作成"}
