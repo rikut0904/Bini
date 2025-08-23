@@ -11,6 +11,9 @@ import (
 )
 
 func WriteJSON(w http.ResponseWriter, code int, v any) {
+	// ヘッダーにContent-Typeをapplication/json; charset=utf-8に設定する。
+	// ステータスコードをcodeに設定する。
+	// vがnilでなければ、vをJSONにエンコードしてwに書き込む。
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
 	w.WriteHeader(code)
 	if v != nil {
@@ -26,6 +29,7 @@ type userCreateRequest struct {
 
 func UsersListHandler(svc service.UserService) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		// ユーザーすべて取得
 		users, err := svc.List(r.Context())
 		if err != nil {
 			WriteJSON(w, http.StatusInternalServerError, map[string]string{"error": err.Error()})
@@ -42,6 +46,7 @@ func UsersCreateHandler(svc service.UserService) http.Handler {
 			WriteJSON(w, http.StatusBadRequest, map[string]string{"error": "invalid json"})
 			return
 		}
+		// ユーザー作成
 		u, err := svc.Create(r.Context(), req.UID, req.Name)
 		if err != nil {
 			WriteJSON(w, http.StatusInternalServerError, map[string]string{"error": err.Error()})
@@ -61,6 +66,7 @@ type challengeCreateRequest struct {
 
 func ChallengesListHandler(svc service.ChallengeService) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		// チャレンジすべて取得
 		list, err := svc.List(r.Context())
 		if err != nil {
 			WriteJSON(w, http.StatusInternalServerError, map[string]string{"error": err.Error()})
@@ -78,6 +84,7 @@ func ChallengesGetHandler(svc service.ChallengeService) http.Handler {
 			WriteJSON(w, http.StatusBadRequest, map[string]string{"error": "invalid id"})
 			return
 		}
+		// チャレンジ取得
 		item, err := svc.Get(r.Context(), id)
 		if err != nil {
 			WriteJSON(w, http.StatusNotFound, map[string]string{"error": err.Error()})
@@ -100,6 +107,7 @@ func ChallengesCreateHandler(svc service.ChallengeService) http.Handler {
 			Level:       req.Level,
 			UserID:      req.UserID,
 		}
+		// チャレンジ作成
 		item, err := svc.Create(r.Context(), in)
 		if err != nil {
 			WriteJSON(w, http.StatusInternalServerError, map[string]string{"error": err.Error()})

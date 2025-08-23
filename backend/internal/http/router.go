@@ -20,7 +20,7 @@ func NewRouter(db *sql.DB) http.Handler {
         allowedOrigins = "*"
     }
     r.Use(cors.Handler(cors.Options{
-        AllowedOrigins:   []string{allowedOrigins}, // 環境変数で設定
+        AllowedOrigins:   []string{allowedOrigins},
 		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
 		AllowedHeaders:   []string{"Accept", "Authorization", "Content-Type", "X-CSRF-Token"},
 		AllowCredentials: false,
