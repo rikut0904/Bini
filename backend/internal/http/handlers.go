@@ -122,6 +122,7 @@ func ChallengesCreateHandler(svc service.ChallengeService) http.Handler {
 		title := r.FormValue("title")
 		description := r.FormValue("description")
 		level := r.FormValue("level")
+		estimatedTime := r.FormValue("estimated_time")
 		userIDStr := r.FormValue("user_id")
 
 		userID, err := strconv.ParseInt(userIDStr, 10, 64)
@@ -171,6 +172,7 @@ func ChallengesCreateHandler(svc service.ChallengeService) http.Handler {
 			Title:       title,
 			Description: description,
 			Level:       level,
+			EstimatedTime: estimatedTime,
 			UserID:      userID,
 			PhotoURL:    photoURL, // Pass the photo URL
 		}

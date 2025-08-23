@@ -7,6 +7,7 @@ type Challenge struct {
 	Title       string    `json:"title"`
 	Description string    `json:"description"`
 	Level       string    `json:"level"` // easy/medium/hard など
+	EstimatedTime string    `json:"estimatedTime"`
 	PhotoURL    string    `json:"photo_url"`
 	UserID      int64     `json:"user_id"`
 	CreatedAt   time.Time `json:"created_at"`

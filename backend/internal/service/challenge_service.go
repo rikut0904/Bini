@@ -18,6 +18,7 @@ type CreateChallengeInput struct {
 	Title       string
 	Description string
 	Level       string
+	EstimatedTime string
 	UserID      int64
 	PhotoURL    string
 }
@@ -46,6 +47,7 @@ func (s *challengeService) Create(ctx context.Context, in CreateChallengeInput) 
 		Title:       in.Title,
 		Description: in.Description,
 		Level:       in.Level,
+		EstimatedTime: in.EstimatedTime,
 		UserID:      in.UserID,
 		PhotoURL:    in.PhotoURL,
 	}
