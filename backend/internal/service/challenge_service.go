@@ -18,6 +18,7 @@ type CreateChallengeInput struct {
 	Description string
 	Level       string
 	UserID      int64
+	PhotoURL    string
 }
 
 type challengeService struct {
@@ -42,6 +43,7 @@ func (s *challengeService) Create(ctx context.Context, in CreateChallengeInput) 
 		Description: in.Description,
 		Level:       in.Level,
 		UserID:      in.UserID,
+		PhotoURL:    in.PhotoURL,
 	}
 	if err := s.repo.Create(ctx, c); err != nil {
 		return nil, err

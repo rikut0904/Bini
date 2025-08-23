@@ -56,8 +56,8 @@ func (r *challengeRepository) Get(ctx context.Context, id int64) (*models.Challe
 
 func (r *challengeRepository) Create(ctx context.Context, c *models.Challenge) error {
 	return r.db.QueryRowContext(ctx, `
-		INSERT INTO challenges (title, description, level, user_id)
-		VALUES ($1, $2, $3, $4)
+		INSERT INTO challenges (title, description, level, user_id, photo_url)
+		VALUES ($1, $2, $3, $4, $5)
 		RETURNING id, created_at
-	`, c.Title, c.Description, c.Level, c.UserID).Scan(&c.ID, &c.CreatedAt)
+	`, c.Title, c.Description, c.Level, c.UserID, c.PhotoURL).Scan(&c.ID, &c.CreatedAt)
 }

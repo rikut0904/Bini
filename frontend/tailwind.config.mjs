@@ -17,7 +17,11 @@ const config = {
             },
             boxShadow: {
                 soft: "0 6px 18px rgba(0,0,0,0.06)"
-            }
+            },
+            fontFamily: {
+                sans: ["var(--font-sans)"],
+                mono: ["var(--font-mono)"],
+            },
         }
     },
     plugins: []
