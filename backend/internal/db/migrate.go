@@ -11,9 +11,9 @@ import (
 	"strings"
 )
 
-// 非破壊のIF NOT EXISTS前提のシンプル実行
 func Migrate(ctx context.Context, db *sql.DB, dir string) error {
 	entries := []string{}
+	// dirの中にあるdirectoryでなく、.sqlファイルのみをentriesに追加する。
 	err := filepath.WalkDir(dir, func(path string, d fs.DirEntry, err error) error {
 		if err != nil {
 			return err

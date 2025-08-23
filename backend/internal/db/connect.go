@@ -10,13 +10,28 @@ import (
 	_ "github.com/jackc/pgx/v5/stdlib"
 )
 
+func Connect(ctx context.Context) (*sql.DB, error) {
+    // dsnは正常時、[postgres://{user}:{pass}@{host}:{port}/{name}?sslmode={ssl}]の形式で変換され、errが[null]として返答される。
+    // エラー時には[""]で返答され、errは[database configuration missing. Set DATABASE_URL or PGHOST/PGUSER/PGPASSWORD/PGDATABASE]として返答される。
+	dsn, err := dsnFromEnv()
+	if err != nil {
+		return nil, err
+	}
+	db, err := sql.Open("pgx", dsn)
+	if err != nil {
+		return nil, err
+	}
+	if err := db.PingContext(ctx); err != nil {
+		return nil, err
+	}
+	return db, nil
+}
+
 func dsnFromEnv() (string, error) {
     if url := envFirstNonEmpty("DATABASE_URL", "POSTGRES_URL", "POSTGRESQL_URL"); url != "" {
-        // 例: postgres://user:pass@host:port/dbname?sslmode=require
         return url, nil
     }
 
-    // Fallback: assemble from PG* variables (works on many PaaS/providers as well)
     host := os.Getenv("PGHOST")
     port := envOr("PGPORT", "5432")
     user := envOr("PGUSER", "postgres")
@@ -51,19 +66,4 @@ func envOr(k, def string) string {
         return v
     }
     return def
-}
-
-func Connect(ctx context.Context) (*sql.DB, error) {
-	dsn, err := dsnFromEnv()
-	if err != nil {
-		return nil, err
-	}
-	db, err := sql.Open("pgx", dsn)
-	if err != nil {
-		return nil, err
-	}
-	if err := db.PingContext(ctx); err != nil {
-		return nil, err
-	}
-	return db, nil
 }
