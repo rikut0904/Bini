@@ -15,7 +15,7 @@ const todaysChallenges = [
     estimatedTime: "30分",
     participants: 124,
     likes: 45,
-    image: "/placeholder.svg?height=200&width=300",
+    image: "/placeholder.jpg",
     progress: 0,
     isRecommended: true,
   },
@@ -28,7 +28,7 @@ const todaysChallenges = [
     estimatedTime: "5分",
     participants: 89,
     likes: 32,
-    image: "/placeholder.svg?height=200&width=300",
+    image: "/placeholder.jpg",
     progress: 0,
     isRecommended: true,
   },
@@ -41,7 +41,7 @@ const todaysChallenges = [
     estimatedTime: "15分",
     participants: 67,
     likes: 28,
-    image: "/placeholder.svg?height=200&width=300",
+    image: "/placeholder.jpg",
     progress: 0,
     isRecommended: false,
   },
@@ -69,7 +69,7 @@ const recentActivities = [
     user: "田中さん",
     action: "「手作りパンに挑戦」を完了しました",
     time: "2時間前",
-    avatar: "/placeholder.svg?height=40&width=40",
+    avatar: "/placeholder-user.jpg",
     type: "completion",
   },
 ]
@@ -127,7 +127,7 @@ export default function HomePage() {
                 >
                   <div className="aspect-video relative">
                     <img
-                      src={challenge.image || "/placeholder.svg"}
+                      src={challenge.image || "/placeholder.jpg"}
                       alt={challenge.title}
                       className="w-full h-full object-cover"
                     />
@@ -200,7 +200,7 @@ export default function HomePage() {
                       className="flex items-center gap-4 p-3 rounded-lg hover:bg-gray-50 transition-colors"
                     >
                       <Avatar>
-                        <AvatarImage src={activity.avatar || "/placeholder.svg"} />
+                        <AvatarImage src={activity.avatar || "/placeholder-user.jpg"} />
                         <AvatarFallback>{activity.user[0]}</AvatarFallback>
                       </Avatar>
                       <div className="flex-1">

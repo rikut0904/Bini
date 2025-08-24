@@ -12,6 +12,7 @@ services:
       - "8080:8080"
     restart: unless-stopped
 
+
   frontend:
     build:
       context: ./frontend
@@ -19,7 +20,8 @@ services:
         # プロキシ方式: クライアントは /api を叩く
         NEXT_PUBLIC_API_BASE_URL: ${NEXT_PUBLIC_API_BASE_URL:-/api}
     environment:
-      NEXT_PUBLIC_API_BASE_URL: ${NEXT_PUBLIC_API_BASE_URL:-/api}
+      # ランタイムで上書きしたい場合に使用（未設定ならビルド時の値が使われます）
+      NEXT_PUBLIC_API_BASE_URL: ${NEXT_PUBLIC_API_BASE_URL:-http://backend:8080}
       PORT: "3000"
     ports:
       - "3000:3000"

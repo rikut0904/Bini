@@ -3,7 +3,7 @@ package httpapi
 import (
 	"database/sql"
 	"net/http"
-    "os"
+	"os"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/cors"
@@ -15,12 +15,12 @@ import (
 func NewRouter(db *sql.DB) http.Handler {
 	r := chi.NewRouter()
 
-    allowedOrigins := os.Getenv("CORS_ALLOWED_ORIGINS")
-    if allowedOrigins == "" {
-        allowedOrigins = "*"
-    }
-    r.Use(cors.Handler(cors.Options{
-        AllowedOrigins:   []string{allowedOrigins},
+	allowedOrigins := os.Getenv("CORS_ALLOWED_ORIGINS")
+	if allowedOrigins == "" {
+		allowedOrigins = "*"
+	}
+	r.Use(cors.Handler(cors.Options{
+		AllowedOrigins:   []string{allowedOrigins},
 		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
 		AllowedHeaders:   []string{"Accept", "Authorization", "Content-Type", "X-CSRF-Token"},
 		AllowCredentials: false,
