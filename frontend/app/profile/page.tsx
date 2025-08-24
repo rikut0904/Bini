@@ -235,31 +235,328 @@ export default function ProfilePage() {
     )
   }
   return (
-    <div className="p-8 max-w-7xl mx-auto">
-      <h1 className="text-3xl font-bold text-gray-900 mb-8">プロフィール</h1>
-      <Card>
-        <CardHeader>
-          <CardTitle>あなたの情報</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="flex items-center space-x-4">
-            <Avatar className="w-16 h-16">
-              <AvatarImage src="/placeholder-user.jpg" />
-              <AvatarFallback>U</AvatarFallback>
-            </Avatar>
-            <div>
-              <p className="text-xl font-semibold">あなたの名前</p>
-              <p className="text-gray-500">your.email@example.com</p>
+     <div className="p-8 max-w-6xl mx-auto">
+      {/* Profile Header */}
+      <Card className="mb-8">
+        <CardContent className="p-8">
+          <div className="flex flex-col md:flex-row gap-6">
+            <div className="flex flex-col items-center md:items-start">
+              <Avatar className="w-32 h-32 mb-4">
+                <AvatarImage src={userProfile.avatar || "/placeholder.svg"} />
+                <AvatarFallback className="text-2xl">{userProfile.name[0]}</AvatarFallback>
+              </Avatar>
+              <Button variant="outline" className="w-full md:w-auto bg-transparent">
+                <Edit className="w-4 h-4 mr-2" />
+                プロフィール編集
+              </Button>
             </div>
-          </div>
-          <div>
-            <Label htmlFor="bio">自己紹介</Label>
-            <p id="bio" className="text-gray-700">
-              ここに自己紹介文が入ります。
-            </p>
+
+            <div className="flex-1">
+              <div className="flex flex-col md:flex-row md:items-start md:justify-between mb-4">
+                <div>
+                  <h1 className="text-3xl font-bold text-gray-900 mb-1">{userProfile.name}</h1>
+                  <p className="text-gray-600 mb-2">{userProfile.username}</p>
+                  <div className="flex items-center gap-4 text-sm text-gray-500 mb-4">
+                    <span>📍 {userProfile.location}</span>
+                    <span>📅 {userProfile.joinDate}から参加</span>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-blue-600">Lv.{userProfile.stats.level}</div>
+                    <div className="text-xs text-gray-500">レベル</div>
+                  </div>
+                  <div className="w-24">
+                    <Progress value={levelProgress} className="h-2 mb-1" />
+                    <div className="text-xs text-gray-500 text-center">
+                      {userProfile.stats.experiencePoints}/{userProfile.stats.nextLevelXP} XP
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <p className="text-gray-700 mb-6">{userProfile.bio}</p>
+
+              {/* Stats Grid */}
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div className="text-center p-3 bg-gradient-to-br from-pink-50 to-pink-100 rounded-lg">
+                  <div className="text-2xl font-bold text-pink-600">{userProfile.stats.totalChallenges}</div>
+                  <div className="text-sm text-gray-600">総チャレンジ数</div>
+                </div>
+                <div className="text-center p-3 bg-gradient-to-br from-green-50 to-green-100 rounded-lg">
+                  <div className="text-2xl font-bold text-green-600">{userProfile.stats.completedChallenges}</div>
+                  <div className="text-sm text-gray-600">完了数</div>
+                </div>
+                <div className="text-center p-3 bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg">
+                  <div className="text-2xl font-bold text-blue-600">{userProfile.stats.totalLikes}</div>
+                  <div className="text-sm text-gray-600">獲得いいね</div>
+                </div>
+                <div className="text-center p-3 bg-gradient-to-br from-yellow-50 to-yellow-100 rounded-lg">
+                  <div className="text-2xl font-bold text-yellow-600">{userProfile.stats.streakDays}</div>
+                  <div className="text-sm text-gray-600">連続日数</div>
+                </div>
+              </div>
+            </div>
           </div>
         </CardContent>
       </Card>
+      
+      {/* Tabs */}
+      <Tabs value={activeTab} onValueChange={setActiveTab}>
+        <TabsList className="grid w-full grid-cols-4">
+          <TabsTrigger value="overview">概要</TabsTrigger>
+          <TabsTrigger value="achievements">実績</TabsTrigger>
+          <TabsTrigger value="challenges">チャレンジ履歴</TabsTrigger>
+          <TabsTrigger value="activity">アクティビティ</TabsTrigger>
+        </TabsList>
+
+        {/* Overview Tab */}
+        <TabsContent value="overview" className="space-y-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* Completion Rate */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Target className="w-5 h-5 text-green-500" />
+                  完了率
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-center mb-4">
+                  <div className="text-4xl font-bold text-green-600 mb-2">{completionRate}%</div>
+                  <Progress value={completionRate} className="h-3" />
+                </div>
+                <div className="text-sm text-gray-600 text-center">
+                  {userProfile.stats.totalChallenges}個中{userProfile.stats.completedChallenges}個完了
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Recent Achievements */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Trophy className="w-5 h-5 text-yellow-500" />
+                  最近の実績
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-3">
+                  {achievements
+                    .filter((a) => a.earned)
+                    .slice(0, 3)
+                    .map((achievement) => (
+                      <div key={achievement.id} className="flex items-center gap-3">
+                        <div className="text-2xl">{achievement.icon}</div>
+                        <div>
+                          <p className="font-medium text-sm">{achievement.name}</p>
+                          <p className="text-xs text-gray-500">{achievement.earnedDate}</p>
+                        </div>
+                      </div>
+                    ))}
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Monthly Progress Chart */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <TrendingUp className="w-5 h-5 text-blue-500" />
+                月別進捗
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-4 gap-4">
+                {monthlyStats.map((stat) => (
+                  <div key={stat.month} className="text-center">
+                    <div className="text-lg font-bold text-gray-900">{stat.month}</div>
+                    <div className="text-sm text-green-600">完了: {stat.completed}</div>
+                    <div className="text-sm text-blue-600">開始: {stat.started}</div>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        {/* Achievements Tab */}
+        <TabsContent value="achievements" className="space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {achievements.map((achievement) => (
+              <Card
+                key={achievement.id}
+                className={`${achievement.earned ? "bg-gradient-to-br from-yellow-50 to-orange-50" : "opacity-60"}`}
+              >
+                <CardContent className="p-4">
+                  <div className="flex items-start gap-3">
+                    <div className="text-3xl">{achievement.icon}</div>
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2 mb-2">
+                        <h3 className="font-bold">{achievement.name}</h3>
+                        <Badge className={`text-xs ${rarityColors[achievement.rarity as keyof typeof rarityColors]}`}>
+                          {achievement.rarity}
+                        </Badge>
+                      </div>
+                      <p className="text-sm text-gray-600 mb-2">{achievement.description}</p>
+
+                      {achievement.earned ? (
+                        <div className="flex items-center gap-1 text-xs text-green-600">
+                          <CheckCircle className="w-3 h-3" />
+                          {achievement.earnedDate}に獲得
+                        </div>
+                      ) : achievement.progress !== undefined ? (
+                        <div>
+                          <div className="flex justify-between text-xs text-gray-500 mb-1">
+                            <span>進捗</span>
+                            <span>
+                              {achievement.progress}/{achievement.total}
+                            </span>
+                          </div>
+                          <Progress value={(achievement.progress / achievement.total) * 100} className="h-2" />
+                        </div>
+                      ) : (
+                        <div className="text-xs text-gray-500">未獲得</div>
+                      )}
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </TabsContent>
+
+        {/* Challenge History Tab */}
+        <TabsContent value="challenges" className="space-y-6">
+          <div className="space-y-4">
+            {challengeHistory.map((challenge) => {
+              const StatusIcon = statusIcons[challenge.status as keyof typeof statusIcons]
+              const statusColor = statusColors[challenge.status as keyof typeof statusColors]
+
+              return (
+                <Card key={challenge.id} className="hover:shadow-md transition-shadow">
+                  <CardContent className="p-4">
+                    <div className="flex items-center gap-4">
+                      <img
+                        src={challenge.image || "/placeholder.svg"}
+                        alt={challenge.title}
+                        className="w-16 h-16 rounded-lg object-cover"
+                      />
+
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2 mb-1">
+                          <h3 className="font-bold text-lg">{challenge.title}</h3>
+                          <Badge variant="outline">{challenge.category}</Badge>
+                          <div className={`flex items-center gap-1 ${statusColor}`}>
+                            <StatusIcon className="w-4 h-4" />
+                            <span className="text-sm">
+                              {challenge.status === "completed"
+                                ? "完了"
+                                : challenge.status === "ongoing"
+                                  ? "進行中"
+                                  : "一時停止"}
+                            </span>
+                          </div>
+                        </div>
+
+                        <div className="flex items-center gap-4 text-sm text-gray-500 mb-2">
+                          {challenge.status === "completed" ? (
+                            <>
+                              <span>📅 {challenge.completedDate}に完了</span>
+                              <span>⏱️ {challenge.duration}</span>
+                            </>
+                          ) : (
+                            <>
+                              <span>📅 {challenge.startDate}に開始</span>
+                              {challenge.progress && <span>📊 {challenge.progress}% 完了</span>}
+                            </>
+                          )}
+                        </div>
+
+                        {challenge.progress && challenge.status === "ongoing" && (
+                          <Progress value={challenge.progress} className="h-2 mb-2" />
+                        )}
+
+                        <div className="flex items-center gap-4 text-sm text-gray-500">
+                          <div className="flex items-center gap-1">
+                            <Heart className="w-4 h-4" />
+                            {challenge.likes}
+                          </div>
+                          <div className="flex items-center gap-1">
+                            <MessageCircle className="w-4 h-4" />
+                            {challenge.comments}
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="flex gap-2">
+                        <Button variant="outline" size="sm" asChild>
+                          <Link href={`/challenge/${challenge.id}`}>詳細</Link>
+                        </Button>
+                        <Button variant="ghost" size="sm">
+                          <Share2 className="w-4 h-4" />
+                        </Button>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              )
+            })}
+          </div>
+        </TabsContent>
+
+        {/* Activity Tab */}
+        <TabsContent value="activity" className="space-y-6">
+          <Card>
+            <CardHeader>
+              <CardTitle>最近のアクティビティ</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                {activityTimeline.map((activity) => (
+                  <div key={activity.id} className="flex gap-3 p-3 rounded-lg hover:bg-gray-50">
+                    {activity.type === "comment_received" || activity.type === "like_received" ? (
+                      <Avatar className="w-8 h-8">
+                        <AvatarImage src={activity.userAvatar || "/placeholder.svg"} />
+                        <AvatarFallback>{activity.user?.[0]}</AvatarFallback>
+                      </Avatar>
+                    ) : (
+                      <div className="w-8 h-8 bg-gradient-to-r from-pink-500 to-blue-500 rounded-full flex items-center justify-center">
+                        {activity.type === "achievement_earned" ? (
+                          <Trophy className="w-4 h-4 text-white" />
+                        ) : (
+                          <CheckCircle className="w-4 h-4 text-white" />
+                        )}
+                      </div>
+                    )}
+
+                    <div className="flex-1">
+                      <p className="text-sm">
+                        {activity.user && <span className="font-medium">{activity.user}</span>}
+                        <span className={activity.user ? "ml-1" : ""}>{activity.action}</span>
+                      </p>
+                      {activity.content && (
+                        <p className="text-sm text-gray-600 mt-1 p-2 bg-gray-100 rounded">"{activity.content}"</p>
+                      )}
+                      <div className="flex items-center gap-2 mt-1">
+                        <span className="text-xs text-gray-500">{activity.time}</span>
+                        {activity.challengeTitle && (
+                          <>
+                            <span className="text-xs text-gray-400">•</span>
+                            <span className="text-xs text-blue-600">{activity.challengeTitle}</span>
+                          </>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+      </Tabs>
     </div>
-  );
+  )
 }
