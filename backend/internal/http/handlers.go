@@ -63,8 +63,6 @@ func UsersCreateHandler(svc service.UserService) http.Handler {
 }
 
 // ---------- Challenges ----------
-// challengeCreateRequest is no longer used for JSON decoding, but for clarity,
-// we'll keep it as a reference for the expected form fields.
 type challengeCreateRequest struct {
 	Title       string `json:"title"`
 	Description string `json:"description"`
@@ -73,7 +71,7 @@ type challengeCreateRequest struct {
 	// PhotoURL will be handled via multipart form
 }
 
-const baseURL = "http://localhost:8080/" // Define your base URL here
+const baseURL = "http://localhost:8080/"
 
 func ChallengesListHandler(svc service.ChallengeService) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -107,13 +105,12 @@ func ChallengesGetHandler(svc service.ChallengeService) http.Handler {
 	})
 }
 
-const uploadDir = "./uploads" // Define upload directory
+const uploadDir = "./uploads"
 
 func ChallengesCreateHandler(svc service.ChallengeService) http.Handler {
-	_ = multipart.ErrMessageTooLarge // Force usage of mime/multipart
+	_ = multipart.ErrMessageTooLarge
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		// Parse multipart form data
-		err := r.ParseMultipartForm(32 << 20) // 32MB max memory
+		err := r.ParseMultipartForm(32 << 20) 
 		if err != nil {
 			WriteJSON(w, http.StatusBadRequest, map[string]string{"error": fmt.Sprintf("failed to parse multipart form: %v", err)})
 			return
@@ -133,7 +130,7 @@ func ChallengesCreateHandler(svc service.ChallengeService) http.Handler {
 
 		var photoURL string
 		file, handler, err := r.FormFile("image")
-		if err == nil { // File was uploaded
+		if err == nil {
 			defer file.Close()
 
 			// Create uploads directory if it doesn't exist
@@ -145,12 +142,10 @@ func ChallengesCreateHandler(svc service.ChallengeService) http.Handler {
 				}
 			}
 
-			// Generate unique filename
 			ext := filepath.Ext(handler.Filename)
 			filename := fmt.Sprintf("%d%s", time.Now().UnixNano(), ext)
 			filePath := filepath.Join(uploadDir, filename)
 
-			// Save the file
 			dst, err := os.Create(filePath)
 			if err != nil {
 				WriteJSON(w, http.StatusInternalServerError, map[string]string{"error": fmt.Sprintf("failed to create file on server: %v", err)})
@@ -163,7 +158,7 @@ func ChallengesCreateHandler(svc service.ChallengeService) http.Handler {
 				return
 			}
 			photoURL = filePath // Store the path
-		} else if err != http.ErrMissingFile { // Other error than missing file
+		} else if err != http.ErrMissingFile {
 			WriteJSON(w, http.StatusBadRequest, map[string]string{"error": fmt.Sprintf("failed to get image file: %v", err)})
 			return
 		}
@@ -174,7 +169,7 @@ func ChallengesCreateHandler(svc service.ChallengeService) http.Handler {
 			Level:       level,
 			EstimatedTime: estimatedTime,
 			UserID:      userID,
-			PhotoURL:    photoURL, // Pass the photo URL
+			PhotoURL:    photoURL,
 		}
 
 		// チャレンジ作成
