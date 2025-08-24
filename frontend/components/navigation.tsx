@@ -4,8 +4,9 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
 import { Home, Target, Users, User, Settings, Sparkles, Menu } from "lucide-react"
-import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle, SheetDescription } from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle, SheetDescription } from "@/components/ui/sheet"
 import { Button } from "@/components/ui/button"
+import { useUser } from "@auth0/nextjs-auth0/client"
 
 const navigationItems = [
   {
@@ -37,6 +38,7 @@ const navigationItems = [
 
 export function Navigation() {
   const pathname = usePathname()
+  const { user, isLoading } = useUser()
 
   const NavLinks = () => (
     <ul className="space-y-2">
@@ -62,10 +64,6 @@ export function Navigation() {
         )
       })}
     </ul>
-  )
-
-  return (
-    <>
       <div className="hidden lg:flex lg:flex-col lg:w-64 lg:h-full lg:fixed lg:left-0 lg:top-0 lg:bg-white lg:border-r lg:border-gray-200 lg:p-6">
         <div className="flex items-center gap-2 mb-8">
           <div className="w-8 h-8 bg-gradient-to-r from-pink-400 to-blue-400 rounded-lg flex items-center justify-center">
@@ -107,6 +105,23 @@ export function Navigation() {
           </SheetContent>
         </Sheet>
       </div>
-    </>
+      <div className="absolute bottom-6 left-6 right-6">
+        <div className="bg-gradient-to-r from-pink-50 to-blue-50 p-4 rounded-lg space-y-3">
+          <p className="text-sm text-gray-600">アカウント</p>
+          <div className="flex gap-2">
+            {isLoading ? (
+              <Button className="w-full" variant="outline" disabled>
+                判定中...
+              </Button>
+            ) : user ? (
+              <Link href="/api/auth/logout" className="flex-1">
+                <Button className="w-full" variant="outline">ログアウト</Button>
+              </Link>
+            ) : (
+              <Link href="/api/auth/login" className="flex-1">
+                <Button className="w-full" variant="default">ログイン</Button>
+              </Link>
+            )}
+      </div>
   )
 }

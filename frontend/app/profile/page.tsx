@@ -9,6 +9,7 @@ import { Progress } from "@/components/ui/progress"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Trophy, Target, Heart, MessageCircle, Share2, CheckCircle, Play, Pause, TrendingUp, Edit } from "lucide-react"
 import Link from "next/link"
+import useSWR from "swr"
 import { Label } from "@/components/ui/label"
 
 const userProfile = {
@@ -212,10 +213,27 @@ const statusColors = {
 
 export default function ProfilePage() {
   const [activeTab, setActiveTab] = useState("overview")
+  // Try to fetch session info from Auth0 route; if unauthorized, show login prompt
+  const { data: session, error: sessionError, isLoading: sessionLoading } = useSWR(
+    "/api/auth/me",
+    (url) => fetch(url, { credentials: "include" }).then((r) => {
+      if (!r.ok) throw new Error("unauthenticated")
+      return r.json()
+    }),
+  )
 
   const completionRate = Math.round((userProfile.stats.completedChallenges / userProfile.stats.totalChallenges) * 100)
   const levelProgress = Math.round((userProfile.stats.experiencePoints / userProfile.stats.nextLevelXP) * 100)
 
+  if (!session && !sessionLoading) {
+    return (
+      <div className="p-8 max-w-2xl mx-auto">
+        <h1 className="text-2xl font-bold mb-4">プロフィール</h1>
+        <p className="text-gray-600 mb-4">プロフィールを見るにはログインしてください。</p>
+        <Link href="/api/auth/login" className="text-pink-600 underline">ログイン</Link>
+      </div>
+    )
+  }
   return (
      <div className="p-8 max-w-6xl mx-auto">
       {/* Profile Header */}
