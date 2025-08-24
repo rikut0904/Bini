@@ -19,16 +19,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="ja">
-      <head>
-        <style>{`
-html {
-  font-family: ${GeistSans.style.fontFamily};
-  --font-sans: ${GeistSans.variable};
-  --font-mono: ${GeistMono.variable};
-}
-        `}</style>
-      </head>
+    <html lang="ja" className={`${GeistSans.variable} ${GeistMono.variable}`}>
       <body className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-blue-50">
         <AuthUserProvider>
           <div className="flex min-h-screen">
