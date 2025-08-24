@@ -9,6 +9,10 @@ export const metadata: Metadata = {
   title: "Bini - 挑戦を始めよう",
   description: "新しいことへの挑戦を気軽に始められるアプリ",
   generator: "v0.dev",
+  viewport: {
+    width: 'device-width',
+    initialScale: 1,
+  },
 }
 
 export default function RootLayout({
@@ -21,7 +25,7 @@ export default function RootLayout({
       <body className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-blue-50">
         <div className="flex min-h-screen">
           <Navigation />
-          <main className="flex-1 ml-64">{children}</main>
+          <main className="flex-1 lg:ml-64">{children}</main>
         </div>
       </body>
     </html>
