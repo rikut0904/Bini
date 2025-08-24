@@ -159,15 +159,12 @@ export default function ChallengePage() {
                 </SelectContent>
               </Select>
 
-              {/* Removed status filter as it's not provided by backend */} いや、これは必要
-
               <Select value={sortBy} onValueChange={setSortBy}>
                 <SelectTrigger className="w-32">
                   <SelectValue placeholder="並び順" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="newest">新着順</SelectItem>
-                  {/* Removed popular and likes sort as they are not provided by backend */} いや、これは必要
                 </SelectContent>
               </Select>
             </div>
@@ -299,7 +296,7 @@ export default function ChallengePage() {
                   <div className="flex items-center gap-2">
                     <Button
                       asChild
-                      className="flex-1 bg-gradient-to-r from-pink-500 to-blue-500 hover:from-pink-600 hover:to-blue-600"
+                      className="flex-1 bg-gradient-to-r from-pink-500 to-blue-500 text-white hover:from-pink-600 hover:to-blue-600"
                     >
                       <Link href={`/challenge/${challenge.id}`}>詳細を見る</Link>
                     </Button>

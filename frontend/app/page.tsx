@@ -174,7 +174,7 @@ export default function HomePage() {
                     </div>
 
                     <div className="flex items-center gap-2">
-                      <Button className="flex-1 bg-gradient-to-r from-pink-500 to-blue-500 hover:from-pink-600 hover:to-blue-600">
+                      <Button className="flex-1 bg-gradient-to-r from-pink-500 to-blue-500 text-white hover:from-pink-600 hover:to-blue-600">
                         挑戦を始める
                       </Button>
                       <Button variant="outline" size="sm">
