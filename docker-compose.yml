@@ -20,6 +20,12 @@ services:
         NEXT_PUBLIC_API_BASE_URL: ${NEXT_PUBLIC_API_BASE_URL:-/api}
     environment:
       NEXT_PUBLIC_API_BASE_URL: ${NEXT_PUBLIC_API_BASE_URL:-/api}
+      # Auth0 required envs for login to work locally
+      AUTH0_SECRET: ${AUTH0_SECRET:-}
+      AUTH0_BASE_URL: ${AUTH0_BASE_URL:-http://localhost:3000}
+      AUTH0_ISSUER_BASE_URL: ${AUTH0_ISSUER_BASE_URL:-}
+      AUTH0_CLIENT_ID: ${AUTH0_CLIENT_ID:-}
+      AUTH0_CLIENT_SECRET: ${AUTH0_CLIENT_SECRET:-}
       PORT: "3000"
     ports:
       - "3000:3000"

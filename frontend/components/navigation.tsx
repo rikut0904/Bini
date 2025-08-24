@@ -4,6 +4,8 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
 import { Home, Target, Users, User, Settings, Sparkles } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import { useUser } from "@auth0/nextjs-auth0/client"
 
 const navigationItems = [
   {
@@ -35,6 +37,7 @@ const navigationItems = [
 
 export function Navigation() {
   const pathname = usePathname()
+  const { user, isLoading } = useUser()
 
   return (
     <nav className="fixed left-0 top-0 h-full w-64 bg-white border-r border-gray-200 p-6">
@@ -70,9 +73,23 @@ export function Navigation() {
       </ul>
 
       <div className="absolute bottom-6 left-6 right-6">
-        <div className="bg-gradient-to-r from-pink-50 to-blue-50 p-4 rounded-lg">
-          <p className="text-sm text-gray-600 mb-2">今日の挑戦</p>
-          <p className="text-xs text-gray-500">新しいレシピに挑戦してみよう！</p>
+        <div className="bg-gradient-to-r from-pink-50 to-blue-50 p-4 rounded-lg space-y-3">
+          <p className="text-sm text-gray-600">アカウント</p>
+          <div className="flex gap-2">
+            {isLoading ? (
+              <Button className="w-full" variant="outline" disabled>
+                判定中...
+              </Button>
+            ) : user ? (
+              <Link href="/api/auth/logout" className="flex-1">
+                <Button className="w-full" variant="outline">ログアウト</Button>
+              </Link>
+            ) : (
+              <Link href="/api/auth/login" className="flex-1">
+                <Button className="w-full" variant="default">ログイン</Button>
+              </Link>
+            )}
+          </div>
         </div>
       </div>
     </nav>

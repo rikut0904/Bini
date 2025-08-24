@@ -4,6 +4,8 @@ import { GeistSans } from "geist/font/sans"
 import { GeistMono } from "geist/font/mono"
 import "./globals.css"
 import { Navigation } from "@/components/navigation"
+import Link from "next/link"
+import AuthUserProvider from "@/components/auth/user-provider"
 
 export const metadata: Metadata = {
   title: "Bini - 挑戦を始めよう",
@@ -28,10 +30,12 @@ html {
         `}</style>
       </head>
       <body className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-blue-50">
-        <div className="flex min-h-screen">
-          <Navigation />
-          <main className="flex-1 ml-64">{children}</main>
-        </div>
+        <AuthUserProvider>
+          <div className="flex min-h-screen">
+            <Navigation />
+            <main className="flex-1 ml-64">{children}</main>
+          </div>
+        </AuthUserProvider>
       </body>
     </html>
   )
